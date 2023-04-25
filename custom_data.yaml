@@ -1,0 +1,8 @@
+
+train: /content/drive/MyDrive/DATASETS/Yapay_Zeka/deneme/yolov8/  # train images (relative to 'path') 128 images
+val: /content/drive/MyDrive/DATASETS/Yapay_Zeka/deneme/yolov8/  # val images (relative to 'path') 128 images
+
+nc: 10
+
+names: ['0','1','2','3','4','5','6','7','8','9']
+
