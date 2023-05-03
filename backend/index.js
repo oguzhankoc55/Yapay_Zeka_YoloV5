@@ -23,6 +23,9 @@ app.post('/upload', (req, res) => {
           return res.status(500).send(err);
         }
         exec("python ../yolov5/detect.py --weights ../last.pt --img 640 --conf 0.25 --source ./public/a.jpeg ", (error, stdout, stderr) => {
+            console.log(stdout)
+            console.log(error)
+            console.log(stderr)
             fs.readdir("../yolov5/runs/detect", (err,files)=>{
                 var len = files.length
                 return res.send({ path: "exp"+len.toString()});
