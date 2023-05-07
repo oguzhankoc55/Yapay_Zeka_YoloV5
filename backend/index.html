@@ -4,18 +4,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Yapay Zeka</title>
 </head>
 <body>
 
     <div class="frame">
         <div class="center">
             <div class="title">
-                <h1>Drop file to upload</h1>
+                <h1>Resim Yükleyiniz</h1>
             </div>
     
             <div class="dropzone">
@@ -41,8 +45,43 @@
       </div>
       <div class="image-viewer">
         <center>
-            <h1>Sonuçlar</h1>
-        <img src="http://100dayscss.com/codepen/upload.svg" id="image"/>
+            
+            <table id="in-out">
+                <tr >
+                  
+                  <th scope="col"><center>Input</center></th>
+                  <th   scope="col"><center>Output</center></th>
+                  
+                </tr>
+            </table>
+        <div class="row">
+            
+            <div class="col-1">
+               
+              </div>
+            <div class="col-5">
+                
+                <img src="http://localhost/public/a.jpeg" id="image2" />
+              </div>
+            
+            <div class="col-5">
+                
+                <img src="http://100dayscss.com/codepen/upload.svg" id="image" />
+            
+            </div>
+          <div class="col-1">
+               
+          </div>
+          </div>
+        
+        
+      
+      
+        <center>
+            <h1>Tahminler</h1>
+            
+            
+        </center>
         
         <table id="result-table">
             <tr>
@@ -58,10 +97,19 @@
               
           </table><a href="/">Geri Dön.</a>
 
-        <h1>Sonuçlar</h1>
+        <h1>Sonuç</h1>
 
+        <img class="results" src="http://localhost/Results/results.png" />
+        <h1>Confusion Matrix</h1>
         <img class="results" src="http://localhost/Results/confusion_matrix.png" />
-        
+        <h1>F1 Curve</h1>
+        <img class="results" src="http://localhost/Results/F1_curve.png" />
+        <h1>P Curve</h1>
+        <img class="results" src="http://localhost/Results/P_curve.png" />
+        <h1>PR Curve</h1>
+        <img class="results" src="http://localhost/Results/PR_curve.png" />
+        <h1>R Curve</h1>
+        <img class="results" src="http://localhost/Results/R_curve.png" />
         </center>
       </div>
       
@@ -73,6 +121,11 @@
         margin-top: 30px;
         width: 60%;
     }
+    #in-out{
+        text-align: center;
+        width: 100%;
+        
+    }
     .results {
         width: 50%;
         height: 50%;
@@ -80,8 +133,12 @@
     }
     #image{
         display: none;
-        width: 300px !important;
-        height: 300px !important;
+        
+
+    }
+    #image2{
+        display: none;
+        
 
     }
 </style>
@@ -147,6 +204,7 @@
         document.getElementsByClassName("frame")[0].style.display = "none"
         document.getElementById("container").style.display = "none"
         document.getElementById("image").style.display = "block"
+        document.getElementById("image2").style.display = "block"
         document.getElementsByClassName("image-viewer")[0].style.display = "block"
         
 
