@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,26 +11,156 @@
     <title>Document</title>
 </head>
 <body>
-     <img id="image"  alt="Görüntü">
 
-    <input id="input-file" type="file" accept="image/*">
+    <div class="frame">
+        <div class="center">
+            <div class="title">
+                <h1>Drop file to upload</h1>
+            </div>
     
-    <input type="button" id="btn" onclick="postFile()">
+            <div class="dropzone">
+
+                <img src="http://100dayscss.com/codepen/upload.svg"   class="upload-icon" />
+                <input id="input-file" type="file" accept="image/*" class="upload-input" />
+            </div>
+    
+            <button type="button" onclick="postFile()" class="btn  dropzone-btn" name="uploadbutton">Upload file</button>
+    
+        </div>
+    </div>
+    <div id="container">
+        <svg  viewBox="0 0 100 100">
+          <defs >
+            <filter id="shadow">
+              <feDropShadow dx="0" dy="0" stdDeviation="1.5" 
+                flood-color="#fc6767"/>
+            </filter>
+          </defs>
+          <circle id="spinner" style="fill:transparent;stroke:#dd2476;stroke-width: 7px;stroke-linecap: round;filter:url(#shadow);" cx="50" cy="50" r="45"/>
+      </svg>
+      </div>
+      <div class="image-viewer">
+        <center>
+            <h1>Sonuçlar</h1>
+        <img src="http://100dayscss.com/codepen/upload.svg" id="image"/>
+        
+        <table id="result-table">
+            <tr>
+              <th></th>
+              <th scope="col">Class</th>
+              <th scope="col">X1</th>
+              <th scope="col">Y1</th>
+              <th scope="col">X2</th>
+              <th scope="col">Y2</th>
+            </tr>
+          
+         
+              
+          </table><a href="/">Geri Dön.</a>
+
+        <h1>Sonuçlar</h1>
+
+        <img class="results" src="http://localhost/Results/confusion_matrix.png" />
+        
+        </center>
+      </div>
+      
 </body>
 </html>
 
 <style>
+    #result-table{
+        margin-top: 30px;
+        width: 60%;
+    }
+    .results {
+        width: 50%;
+        height: 50%;
+
+    }
     #image{
         display: none;
+        width: 300px !important;
+        height: 300px !important;
+
     }
 </style>
+
+<style>
+    .image-viewer{
+        display: none;
+    }
+      
+      #container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        display: none;
+        width: 200px;
+        height: 200px;
+      }
+      
+      @keyframes animation {
+        0% {
+          stroke-dasharray: 1 98;
+          stroke-dashoffset: -105;
+        }
+        50% {
+          stroke-dasharray: 80 10;
+          stroke-dashoffset: -160;
+        }
+        100% {
+          stroke-dasharray: 1 98;
+          stroke-dashoffset: -300;
+        }
+      }
+      
+      #spinner {
+        transform-origin: center;
+        animation-name: animation;
+        animation-duration: 1.2s;
+        animation-timing-function: cubic-bezier;
+        animation-iteration-count: infinite;
+      }
+</style>
 <script>
-    function postFile(){
+    function loadingAnimation() {
+        document.getElementsByClassName("title")[0].style.display = "none"
+        document.getElementsByClassName("dropzone")[0].style.display = "none" 
+        document.getElementsByClassName("dropzone-btn")[0].style.display = "none" 
+        document.getElementsByClassName("frame")[0].style.display = "none"
+        document.getElementById("container").style.display = "block"
+
+    }
+    function uploadScreen() {
+        document.getElementsByClassName("title")[0].style.display = "block"
+        document.getElementsByClassName("dropzone")[0].style.display = "block" 
+        document.getElementsByClassName("dropzone-btn")[0].style.display = "block" 
+        document.getElementsByClassName("frame")[0].style.display = "block"
+        document.getElementById("container").style.display = "none"
+    }
+    function showImage(){
+        document.getElementsByClassName("title")[0].style.display = "none"
+        document.getElementsByClassName("dropzone")[0].style.display = "none" 
+        document.getElementsByClassName("dropzone-btn")[0].style.display = "none" 
+        document.getElementsByClassName("frame")[0].style.display = "none"
+        document.getElementById("container").style.display = "none"
+        document.getElementById("image").style.display = "block"
+        document.getElementsByClassName("image-viewer")[0].style.display = "block"
         
+
+    }
+
+    function showContentImage(){
+        document.getElementById("image").style.display = "block"
+    }    function postFile(){
+        alert("Post File")
         var file = document.getElementById("input-file").files[0];
         var formData = new FormData();
         formData.append('file',file);
-
+        console.log(file)
+        loadingAnimation()
         $.ajax({
             url : 'upload',
             type : 'POST',
@@ -35,10 +168,156 @@
             processData: false,  // tell jQuery not to process the data
             contentType: false,  // tell jQuery not to set contentType
             success : function(data) {
+                showImage()
                 var imageURL = "http://localhost/"+data.path+"/a.jpeg"
                 document.getElementById("image").src = imageURL
                 document.getElementById("image").style.display = "block"
+            
+
+
+// Tablonun yerleştirileceği HTML elementini seçin
+let table = document.getElementById("result-table");
+var myArray = data.data
+// Döngü ile her dizi öğesi için bir tablo satırı oluşturun
+for (let i = 0; i < myArray.length; i++) {
+  // Tablo satırı oluşturun
+  let row = document.createElement("tr");
+  let emptyCell = document.createElement("td");
+  emptyCell.innerHTML = "";
+  row.appendChild(emptyCell);
+
+  // Her özellik için bir tablo hücresi oluşturun ve özellik değerini yazdırın
+  let classCell = document.createElement("td");
+  classCell.innerHTML = myArray[i].class;
+  row.appendChild(classCell);
+
+  let value1Cell = document.createElement("td");
+  value1Cell.innerHTML = myArray[i].value1;
+  row.appendChild(value1Cell);
+
+  let value2Cell = document.createElement("td");
+  value2Cell.innerHTML = myArray[i].value2;
+  row.appendChild(value2Cell);
+
+  let value3Cell = document.createElement("td");
+  value3Cell.innerHTML = myArray[i].value3;
+  row.appendChild(value3Cell);
+
+  let value4Cell = document.createElement("td");
+  value4Cell.innerHTML = myArray[i].value4;
+  row.appendChild(value4Cell);
+
+  // Tablo satırını HTML elementine ekle
+  table.appendChild(row);
+}
             }
         });
     }
 </script>
+    <!-- original pen: https://codepen.io/roydigerhund/pen/ZQdbeN  -->
+    
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);
+
+    .frame {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        box-shadow: 4px 8px 16px 0 rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background: linear-gradient(to top right, rgb(187, 239, 255) 0%, rgb(35, 178, 255) 100%);
+        color: #333;
+        font-family: "Open Sans", Helvetica, sans-serif;
+    }
+    
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        height: 460px;
+        border-radius: 3px;
+        box-shadow: 8px 10px 15px 0 rgba(0, 0, 0, 0.2);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+    }
+    
+    .title {
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid #999;
+        text-align: center;
+    }
+    
+    h1 {
+        font-size: 16px;
+        font-weight: 300;
+        color: #666;
+    }
+    
+    .dropzone {
+        height: 80px;
+        border: 1px dashed #999;
+        border-radius: 3px;
+        text-align: center;
+    }
+    
+    .upload-icon {
+        margin: 25px 2px 2px 2px;
+    }
+    
+    .upload-input {
+        position: relative;
+        top: -62px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    
+    .btn {
+        display: block;
+        width: 140px;
+        height: 40px;
+        background: darkmagenta;
+        color: #fff;
+        border-radius: 3px;
+        border: 0;
+        box-shadow: 0 3px 0 0 hotpink;
+        transition: all 0.3s ease-in-out;
+        font-size: 14px;
+    }
+    
+    .btn:hover {
+        background: rebeccapurple;
+        box-shadow: 0 3px 0 0 deeppink;
+    }
+    </style>
+</html>
+
